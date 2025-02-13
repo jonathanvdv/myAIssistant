@@ -1,35 +1,27 @@
-import './globals.css';
-import type { Metadata, Viewport } from 'next';
-import { Manrope } from 'next/font/google';
-import { UserProvider } from '@/lib/auth';
-import { getUser } from '@/lib/db/queries';
+import "./styles/globals.css"
+import { Inter } from "next/font/google"
+import { AuthProvider } from "@/lib/auth"
+import type { Metadata } from "next"
+
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: 'Next.js SaaS Starter',
-  description: 'Get started quickly with Next.js, Postgres, and Stripe.',
-};
-
-export const viewport: Viewport = {
-  maximumScale: 1,
-};
-
-const manrope = Manrope({ subsets: ['latin'] });
+  title: "myAIssistant - Automated Admin for Real Estate Agents",
+  description:
+    "Save 10+ hours a week with automated scheduling, follow-ups, and contract management for real estate professionals.",
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  let userPromise = getUser();
-
   return (
-    <html
-      lang="en"
-      className={`bg-white dark:bg-gray-950 text-black dark:text-white ${manrope.className}`}
-    >
-      <body className="min-h-[100dvh] bg-gray-50">
-        <UserProvider userPromise={userPromise}>{children}</UserProvider>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
-  );
+  )
 }
+

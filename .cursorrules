@@ -1,0 +1,105 @@
+You are an expert in TypeScript, Node.js, Next.js, React, Shadcn UI, Radix UI, Tailwind CSS, PostgreSQL, Supabase, and Stripe integrations.
+
+## Code Style and Structure
+- Write concise, technical TypeScript code with accurate examples.
+- Use functional and declarative programming patterns; avoid classes.
+- Favor modularization and component reuse over code duplication.
+- Use descriptive variable names with auxiliary verbs (e.g., `isLoading`, `hasError`).
+- Structure files with exported components, subcomponents, helpers, static content, and types.
+- Favor named exports for components and functions.
+- Use lowercase with dashes for directory names (e.g., `components/payment-checkout`).
+
+## TypeScript and Validation
+- Use TypeScript for all code.
+- Prefer interfaces over types for object shapes.
+- Utilize Zod for schema validation and type inference.
+- Avoid enums; use literal types or maps instead.
+- Implement functional components with TypeScript interfaces for props.
+
+## Syntax and Formatting
+- Use the `function` keyword for pure functions.
+- Write declarative JSX with a clear and readable structure.
+- Avoid unnecessary curly braces in conditionals; use concise syntax for simple statements.
+- Follow Next.js best practices for App Router and middleware.
+
+## UI and Styling
+- Use Shadcn UI and Radix UI for consistent, accessible component design.
+- Implement responsive design with Tailwind CSS, using a mobile-first approach.
+- Ensure styling consistency across the application.
+- Utilize Tailwind's theming capabilities for consistent branding.
+
+## State Management and Data Fetching
+- Use React state for local state management.
+- Use TanStack Query for data fetching, caching, and synchronization.
+- Minimize `useEffect` and `setState`; favor derived state and memoization where possible.
+- Optimize API calls to reduce unnecessary re-renders.
+
+## Database and Backend (Supabase & PostgreSQL)
+- Use Supabase as the primary backend for authentication, database, and storage.
+- Structure database tables efficiently, normalizing where appropriate.
+- Implement Row Level Security (RLS) with Supabase policies for access control.
+- Use Supabase Auth for managing authentication and user roles.
+- Favor Supabase functions for backend logic over client-side computations.
+- Optimize Supabase queries with indexes, pagination, and caching.
+- Handle real-time data updates using Supabase's real-time subscriptions.
+- Ensure all Supabase API calls are wrapped with error handling.
+
+## Authentication and Security
+- Use Supabase Auth for authentication with JWTs stored in cookies.
+- Implement role-based access control (RBAC) with Owner and Member roles.
+- Ensure proper authentication middleware in Next.js API routes.
+- Use Zod to validate inputs and API request payloads.
+- Restrict access to database operations based on user roles.
+
+## Payments and Subscription Management
+- Implement Stripe for payment processing and subscription management.
+- Use Stripe Checkout for handling pricing page transactions.
+- Implement Stripe Customer Portal for managing subscriptions.
+- Listen for Stripe webhook events (`checkout.session.completed`, `customer.subscription.updated`).
+- Ensure proper error handling and security measures for Stripe integration.
+
+## Performance Optimization
+- Default to React Server Components (RSC) where possible.
+- Wrap client components in Suspense with fallback UI.
+- Use dynamic imports for code splitting.
+- Optimize images: use WebP format, include size data, and implement lazy loading.
+- Reduce JavaScript bundle size by eliminating unused dependencies.
+
+## Testing and Quality Assurance
+- Write unit tests for critical components.
+- Use Jest and React Testing Library for frontend testing.
+- Implement integration tests for API routes and database interactions.
+- Mock external dependencies and API calls to isolate unit tests.
+- Use snapshot testing selectively to catch unintended UI changes.
+
+## Accessibility (a11y)
+- Use semantic HTML for meaningful structure.
+- Apply ARIA attributes where needed.
+- Ensure full keyboard navigation support.
+- Maintain accessible color contrast ratios.
+- Follow a logical heading hierarchy.
+
+## Error Handling and Logging
+- Implement global error handling with proper fallback UI.
+- Log errors to an external service like Sentry.
+- Provide user-friendly error messages.
+- Use guard clauses to handle edge cases early.
+- Ensure Stripe webhook handlers return meaningful responses.
+
+## Documentation and Deployment
+- Document all public functions, components, and API routes.
+- Use JSDoc for documentation.
+- Add examples when appropriate.
+- Deploy to Vercel following best practices.
+- Configure environment variables securely (`.env.local`, Vercel secrets).
+- Set up Stripe webhooks for production.
+
+## Key Conventions
+- Use `nuqs` for managing URL search parameters.
+- Optimize for Web Vitals (LCP, CLS, FID).
+- Use strict equality (`===`) instead of loose equality (`==`).
+- Minimize `use client`; prefer server-side rendering when applicable.
+- Follow Next.js documentation for Data Fetching, Rendering, and Routing.
+- Ensure all commits have meaningful messages.
+
+You are expected to follow all these guidelines strictly to maintain code consistency, performance, security, and best practices across the project.
