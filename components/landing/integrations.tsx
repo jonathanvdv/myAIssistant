@@ -15,10 +15,10 @@ export default function Integrations() {
   const { ref, isVisible } = useScrollAnimation()
 
   return (
-    <section className="py-20 px-6 lg:px-8">
+    <section className="py-12 md:py-20 px-4 md:px-6 lg:px-8">
       <div ref={ref} className={`container mx-auto ${isVisible ? "animate-fade-up" : "opacity-0"}`}>
-        <h2 className="text-3xl font-bold text-center mb-12">Seamless Integrations</h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">Seamless Integrations</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 md:gap-8 items-center">
           {integrations.map((integration, index) => (
             <div
               key={index}
@@ -29,7 +29,7 @@ export default function Integrations() {
                 alt={integration.name}
                 width={120}
                 height={40}
-                className="h-12 w-auto"
+                className="h-8 md:h-12 w-auto opacity-80 hover:opacity-100 transition-opacity"
               />
             </div>
           ))}

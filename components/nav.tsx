@@ -1,14 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { useAuth } from '@/lib/auth'
 import { Button } from '@/components/ui/button'
 import MobileMenu from '@/components/landing/mobile-menu'
 import Image from 'next/image'
 
 export function Nav() {
-  const { user } = useAuth()
-
   return (
     <nav className="py-4 px-6 lg:px-8 flex items-center justify-between">
       <Link href="/" className="flex items-center">
@@ -28,22 +25,14 @@ export function Nav() {
         <Link href="#features" className="text-gray-600 hover:text-gray-900">
           Features
         </Link>
-        {user ? (
-          <Button variant="ghost" asChild>
-            <Link href="/dashboard">Dashboard</Link>
+        <Link href="/login">
+          <Button variant="outline" className="rounded-full px-6 border-2 hover:bg-gray-50">
+            Sign In
           </Button>
-        ) : (
-          <>
-            <Link href="/login">
-              <Button variant="outline" className="rounded-full px-6">
-                Log In
-              </Button>
-            </Link>
-            <Button className="bg-primary hover:bg-primary/90 text-white rounded-full px-6">
-              Book a Demo
-            </Button>
-          </>
-        )}
+        </Link>
+        <Button className="bg-primary hover:bg-primary/90 text-white rounded-full px-6">
+          Book a Demo
+        </Button>
       </div>
       <MobileMenu />
     </nav>

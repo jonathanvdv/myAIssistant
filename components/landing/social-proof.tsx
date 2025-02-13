@@ -15,18 +15,23 @@ export default function SocialProof() {
   const { ref, isVisible } = useScrollAnimation()
 
   return (
-    <section className="py-12 px-6 lg:px-8">
+    <section className="py-8 md:py-12 px-4 md:px-6 lg:px-8">
       <div ref={ref} className={`container mx-auto ${isVisible ? "animate-fade-up" : "opacity-0"}`}>
-        <h3 className="text-center text-gray-600 mb-8">Trusted by leading real estate brands</h3>
-        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+        <h3 className="text-center text-gray-600 mb-6 md:mb-8 text-sm md:text-base">
+          Trusted by leading real estate brands
+        </h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 items-center justify-items-center">
           {partners.map((partner, index) => (
-            <div key={index} className="grayscale hover:grayscale-0 transition-all duration-300">
+            <div 
+              key={index} 
+              className="w-full px-4 grayscale hover:grayscale-0 transition-all duration-300"
+            >
               <Image
                 src={partner.logo}
                 alt={partner.name}
                 width={120}
                 height={40}
-                className="h-10 w-auto"
+                className="h-6 md:h-10 w-auto mx-auto"
               />
             </div>
           ))}

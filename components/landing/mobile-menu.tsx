@@ -26,8 +26,8 @@ export default function MobileMenu() {
             Features
           </Link>
           <Link href="/login" onClick={() => setOpen(false)}>
-            <Button variant="outline" className="w-full rounded-full">
-              Log In
+            <Button variant="outline" className="w-full rounded-full border-2 hover:bg-gray-50">
+              Sign In
             </Button>
           </Link>
           <Button
