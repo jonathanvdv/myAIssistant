@@ -13,21 +13,26 @@ export default async function AuthCallbackPage() {
           return cookieStore.get(name)?.value
         },
         set(name: string, value: string, options: any) {
-          cookieStore.set({ name, value, ...options })
+          cookieStore.set(name, value, options)
         },
         remove(name: string, options: any) {
-          cookieStore.set({ name, value: '', ...options })
+          cookieStore.delete(name, options)
         },
       },
     }
   )
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  try {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
 
-  if (session) {
-    redirect('/')
+    if (session) {
+      redirect('/dashboard')
+    }
+  } catch (error) {
+    console.error('Auth callback error:', error)
+    return null
   }
 
   return null

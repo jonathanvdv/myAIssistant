@@ -1,73 +1,59 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
 // Add the paths that require authentication
-const protectedPaths = ['/dashboard', '/settings', '/profile']
+const protectedPaths = [
+  '/dashboard',
+  '/clients',
+  '/appointments',
+  '/reports',
+  '/settings',
+  '/profile'
+]
 
-export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  })
+export async function middleware(req: NextRequest) {
+  const res = NextResponse.next()
+  const supabase = createMiddlewareClient({ req, res })
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          })
-        },
-        remove(name: string, options: CookieOptions) {
-          response.cookies.set({
-            name,
-            value: '',
-            ...options,
-          })
-        },
-      },
+  try {
+    // Refresh session if expired
+    const { data: { session }, error } = await supabase.auth.getSession()
+
+    // Allow access to public routes
+    if (req.nextUrl.pathname === '/' || req.nextUrl.pathname === '/login') {
+      return res
     }
-  )
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    // Check if the path is protected
+    const isProtectedPath = protectedPaths.some(path => 
+      req.nextUrl.pathname.startsWith(path)
+    )
 
-  const { pathname } = request.nextUrl
+    // If protected path and no session, redirect to login
+    if (isProtectedPath && !session) {
+      const redirectUrl = req.nextUrl.clone()
+      redirectUrl.pathname = '/login'
+      redirectUrl.searchParams.set('redirectedFrom', req.nextUrl.pathname)
+      return NextResponse.redirect(redirectUrl)
+    }
 
-  // Only check authentication for protected routes
-  const isProtectedRoute = protectedPaths.some(path => pathname.startsWith(path))
-
-  // If accessing a protected route without being logged in, redirect to login
-  if (isProtectedRoute && !session) {
-    return NextResponse.redirect(new URL('/login', request.url))
+    return res
+  } catch (error) {
+    console.error('Middleware error:', error)
+    return res
   }
-
-  // If logged in and trying to access login page, redirect to dashboard
-  if (session && pathname === '/login') {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
-  }
-
-  return response
 }
 
 export const config = {
   matcher: [
     /*
-     * Match all request paths except:
+     * Match all request paths except for the ones starting with:
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder
      */
-    '/((?!_next/static|_next/image|favicon.ico|public/).*)',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }

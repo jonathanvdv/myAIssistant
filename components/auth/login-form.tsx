@@ -6,13 +6,14 @@ import { Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Icons } from '@/components/ui/icons'
-import { supabase } from '@/lib/supabase/client'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 export function LoginForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({ email: '', password: '' })
   const [showPassword, setShowPassword] = useState(false)
+  const supabase = createClientComponentClient()
 
   // Handle form submission for email/password login
   async function onSubmit(e: React.FormEvent) {
@@ -20,8 +21,14 @@ export function LoginForm() {
     setIsLoading(true)
 
     try {
-      const { error } = await supabase.auth.signInWithPassword(formData)
+      const { error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      })
+
       if (error) throw error
+
+      router.refresh()
       router.push('/dashboard')
     } catch (error) {
       console.error('Error:', error)
@@ -37,7 +44,9 @@ export function LoginForm() {
       setIsLoading(true)
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: `${window.location.origin}/auth/callback` }
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
       })
       if (error) throw error
     } catch (error) {
@@ -50,10 +59,10 @@ export function LoginForm() {
   return (
     <div className="space-y-4">
       <form onSubmit={onSubmit} className="space-y-4">
-        {/* Email/Phone Input */}
+        {/* Email Input */}
         <Input
-          type="text"
-          placeholder="Email or Phone"
+          type="email"
+          placeholder="Email"
           disabled={isLoading}
           value={formData.email}
           onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}

@@ -1,7 +1,40 @@
+'use client'
+
+import { useEffect } from 'react'
 import { LoginForm } from "@/components/auth/login-form"
 import Image from "next/image"
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
+  const router = useRouter()
+  const supabase = createClientComponentClient()
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession()
+      if (error) {
+        console.error('Error checking session:', error)
+        return
+      }
+      if (session) {
+        router.replace('/dashboard')
+      }
+    }
+    
+    checkSession()
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        router.replace('/dashboard')
+      }
+    })
+
+    return () => subscription.unsubscribe()
+  }, [supabase, router])
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4">
       <div className="w-full max-w-md space-y-8">
